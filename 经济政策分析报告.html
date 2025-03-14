@@ -1,0 +1,1705 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025年政府工作报告</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['-apple-system', 'BlinkMacSystemFont', 'PingFang SC', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'card': '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+                        'card-hover': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                    },
+                    transitionProperty: {
+                        'height': 'height',
+                        'spacing': 'margin, padding',
+                    },
+                },
+            },
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes scaleUp {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        /* 数据引用样式 */
+        .data-citation {
+            text-decoration: underline;
+            text-decoration-style: dotted;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 3px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: inherit;
+            position: relative;
+            font-weight: 500;
+        }
+        
+        .data-citation:hover {
+            text-decoration-style: solid;
+            text-decoration-color: #dc2626;
+            color: #dc2626;
+        }
+        
+        .dark .data-citation:hover {
+            text-decoration-color: #ef4444;
+            color: #ef4444;
+        }
+        
+        /* 数据来源弹窗样式 */
+        .citation-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .citation-popup.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .citation-content {
+            background-color: #fff;
+            max-width: 90%;
+            width: 600px;
+            max-height: 90vh;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+        
+        .dark .citation-content {
+            background-color: #1F2937;
+            color: #F9FAFB;
+        }
+        
+        .citation-popup.active .citation-content {
+            transform: translateY(0);
+        }
+        
+        .citation-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #E5E7EB;
+            background-color: #dc2626;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .dark .citation-header {
+            border-bottom-color: #374151;
+        }
+        
+        .citation-body {
+            padding: 1.5rem;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        
+        .citation-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid #E5E7EB;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .dark .citation-footer {
+            border-top-color: #374151;
+        }
+        
+        .citation-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .citation-primary-btn {
+            background-color: #dc2626;
+            color: white;
+        }
+        
+        .citation-primary-btn:hover {
+            background-color: #b91c1c;
+        }
+        
+        .citation-secondary-btn {
+            background-color: #E5E7EB;
+            color: #111827;
+        }
+        
+        .dark .citation-secondary-btn {
+            background-color: #374151;
+            color: #F9FAFB;
+        }
+        
+        .citation-secondary-btn:hover {
+            background-color: #D1D5DB;
+        }
+        
+        .dark .citation-secondary-btn:hover {
+            background-color: #4B5563;
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+            opacity: 0;
+        }
+        .animate-slide-in {
+            animation: slideIn 0.5s ease-out forwards;
+        }
+        .animate-scale-up {
+            animation: scaleUp 0.4s ease-out forwards;
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .dark {
+            color-scheme: dark;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            letter-spacing: 0.015em;
+            line-height: 1.65;
+        }
+        
+        /* 滚动条美化 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: #2d3748;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c5c5c5;
+            border-radius: 8px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #4a5568;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a0aec0;
+        }
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #718096;
+        }
+        
+        /* 加载动画 */
+        .loading-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: white;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        .dark .loading-container {
+            background-color: #1a202c;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-left-color: #dc2626;
+            animation: spin 1s linear infinite;
+        }
+        .dark .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-left-color: #ef4444;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+    <!-- 页面加载动画 -->
+    <div id="loading" class="loading-container">
+        <div class="spinner"></div>
+    </div>
+    
+    <!-- 数据引用弹窗 -->    
+    <div id="citationPopup" class="citation-popup">
+        <div class="citation-content">
+            <div class="citation-header">
+                <h3 class="text-lg font-semibold text-white">数据来源引用</h3>
+                <button id="closePopup" class="text-white hover:text-gray-200 focus:outline-none">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="citationBody" class="citation-body text-gray-600 dark:text-gray-300">
+                <!-- 引用内容将通过JavaScript动态插入 -->
+            </div>
+            <div class="citation-footer">
+                <a id="sourceLink" href="#" target="_blank" class="citation-btn citation-primary-btn">
+                    <i class="fas fa-external-link-alt mr-2"></i>查看原文
+                </a>
+                <button id="closeCitationBtn" class="citation-btn citation-secondary-btn">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- 顶部导航栏 -->
+        <nav class="fixed top-0 left-0 right-0 bg-white dark:bg-gray-800 shadow-sm z-50 transition-all duration-300 backdrop-blur-md bg-opacity-90 dark:bg-opacity-90">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <h1 class="text-xl font-bold text-red-600 dark:text-red-500">
+                                <i class="fas fa-chart-line mr-2"></i>2025政府工作报告
+                            </h1>
+                        </div>
+                    </div>
+                    <div class="hidden md:block">
+                        <div class="ml-4 flex items-center space-x-4">
+                            <div class="relative mr-4">
+                                <div class="flex items-center bg-gray-100 dark:bg-gray-700 rounded-full px-3 py-1">
+                                    <i class="fas fa-search text-gray-500 dark:text-gray-400 mr-2 text-sm"></i>
+                                    <input type="text" id="search-input" placeholder="搜索内容..." class="bg-transparent border-0 outline-none text-sm text-gray-700 dark:text-gray-300 w-40 focus:w-56 transition-all duration-300">
+                                    <select id="search-filter" class="bg-transparent text-xs text-gray-500 dark:text-gray-400 border-0 outline-none cursor-pointer ml-1 w-12">
+                                        <option value="all">全部</option>
+                                        <option value="citation">引用</option>
+                                        <option value="fiscal">财政</option>
+                                        <option value="monetary">货币</option>
+                                    </select>
+                                </div>
+                                <div id="search-results" class="absolute top-full right-0 mt-2 w-72 max-h-96 overflow-y-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg z-30 hidden">
+                                    <div class="p-2 text-sm text-gray-700 dark:text-gray-300">
+                                        <div id="results-container"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="#goals" class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors duration-200">发展目标</a>
+                            <a href="#tasks" class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors duration-200">重点任务</a>
+                            <a href="#analysis" class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors duration-200">工作报告</a>
+                            <a href="#impact" class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors duration-200">行业影响</a>
+                            <a href="#outlook" class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors duration-200">未来展望</a>
+                            <button id="themeToggle" class="ml-3 p-2 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500">
+                                <i class="fas fa-moon dark:hidden text-gray-600"></i>
+                                <i class="fas fa-sun hidden dark:block text-yellow-400"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="md:hidden">
+                        <button id="mobileMenuButton" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 focus:outline-none">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <button id="mobileThemeToggle" class="ml-2 p-2 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                            <i class="fas fa-moon dark:hidden text-gray-600"></i>
+                            <i class="fas fa-sun hidden dark:block text-yellow-400"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 移动菜单 -->
+            <div id="mobileMenu" class="hidden md:hidden bg-white dark:bg-gray-800 shadow-md">
+                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                    <a href="#goals" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">发展目标</a>
+                    <a href="#tasks" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">重点任务</a>
+                    <a href="#analysis" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">工作报告</a>
+                    <a href="#impact" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">行业影响</a>
+                    <a href="#outlook" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">未来展望</a>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- 标题区域 -->
+        <header class="pt-24 pb-12 animate-fade-in">
+            <div class="text-center">
+
+                <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">2025政府工作报告</h1>
+            </div>
+        </header>
+        
+
+
+        <!-- 主要内容区域 -->
+        <div class="space-y-16">
+            <!-- 发展目标部分 -->
+            <section id="goals" class="animate-fade-in">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">2025年发展目标</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">GDP增长</h3>
+                            <i class="fas fa-chart-line text-red-500"></i>
+                        </div>
+                        <div class="text-3xl font-bold text-red-600 dark:text-red-400"><span class="data-citation" data-content="国内生产总值增长5%左右" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">5%左右</span></div>
+                        <p class="text-gray-600 dark:text-gray-400 mt-2">2025年经济增长预期目标</p>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">就业目标</h3>
+                            <i class="fas fa-user-tie text-red-500"></i>
+                        </div>
+                        <div class="text-3xl font-bold text-red-600 dark:text-red-400"><span class="data-citation" data-content="城镇新增就业1200万人以上" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">1200万+</span></div>
+                        <p class="text-gray-600 dark:text-gray-400 mt-2">城镇新增就业人数目标</p>
+                        <p class="text-gray-500 dark:text-gray-400 mt-1">城镇调查失业率<span class="data-citation" data-content="城镇调查失业率5.5%左右" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">5.5%左右</span></p>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">CPI目标</h3>
+                            <i class="fas fa-percentage text-red-500"></i>
+                        </div>
+                        <div class="text-3xl font-bold text-red-600 dark:text-red-400"><span class="data-citation" data-content="居民消费价格涨幅2%左右" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">2%左右</span></div>
+                        <p class="text-gray-600 dark:text-gray-400 mt-2">居民消费价格涨幅预期</p>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">粮食产量</h3>
+                            <i class="fas fa-wheat-awn text-red-500"></i>
+                        </div>
+                        <div class="text-3xl font-bold text-red-600 dark:text-red-400"><span class="data-citation" data-content="粮食产量1.4万亿斤左右" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">1.4万亿斤</span></div>
+                        <p class="text-gray-600 dark:text-gray-400 mt-2">全年粮食产量目标</p>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">节能降耗</h3>
+                            <i class="fas fa-leaf text-red-500"></i>
+                        </div>
+                        <div class="text-3xl font-bold text-red-600 dark:text-red-400"><span class="data-citation" data-content="单位国内生产总值能耗降低3%左右" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">-3%左右</span></div>
+                        <p class="text-gray-600 dark:text-gray-400 mt-2">单位GDP能耗降低目标</p>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">居民收入</h3>
+                            <i class="fas fa-wallet text-red-500"></i>
+                        </div>
+                        <div class="text-3xl font-bold text-red-600 dark:text-red-400">同步增长</div>
+                        <p class="text-gray-600 dark:text-gray-400 mt-2">居民收入增长与经济增长同步</p>
+                    </div>
+                </div>
+                
+                <div class="mt-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">目标设定依据</h3>
+                    <div class="space-y-4 text-gray-600 dark:text-gray-400">
+                        <p><i class="fas fa-check-circle text-red-500 mr-2"></i>经济增长5%左右的目标，既是稳就业、防风险、惠民生的需要，也有经济增长潜力和有利条件支撑。</p>
+                        <p><i class="fas fa-check-circle text-red-500 mr-2"></i>就业目标体现了在就业总量和结构性矛盾更加突出背景下，加大稳就业力度的要求。</p>
+                        <p><i class="fas fa-check-circle text-red-500 mr-2"></i>物价目标旨在通过各项政策和改革共同作用，改善供求关系，使价格总水平处在合理区间。</p>
+                        <p><i class="fas fa-exclamation-circle text-red-500 mr-2"></i>实现这些目标需要付出艰苦努力，政府将采取积极的财政政策和适度宽松的货币政策予以支持。</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 重点任务部分 -->
+            <section id="tasks" class="animate-fade-in">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">重点工作任务</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-red-100 dark:bg-red-900 rounded-full p-3 mr-4">
+                                <i class="fas fa-coins text-red-500 dark:text-red-300 text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">积极的财政政策</h3>
+                        </div>
+                        <div class="space-y-3 text-gray-600 dark:text-gray-400">
+                            <p><i class="fas fa-check text-red-500 mr-2"></i>赤字率<span class="data-citation" data-content="今年赤字率拟核4%左右安排、比上年提高1个百分点" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">4%左右，比上年提高1个百分点</span></p>
+                            <p><i class="fas fa-check text-red-500 mr-2"></i>赤字规模<span class="data-citation" data-content="赤字规模5.66万亿元、比上年增加1.6万亿元" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">5.66万亿元，增加1.6万亿元</span></p>
+                            <p><i class="fas fa-check text-red-500 mr-2"></i>发行超长期特别国债<span class="data-citation" data-content="拟发行超长期特别国债1.3万亿元、比上年增加3000亿元" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">1.3万亿元</span></p>
+                            <p><i class="fas fa-check text-red-500 mr-2"></i>发行特别国债<span class="data-citation" data-content="拟发行特别国债5000亿元，支持国有大型商业银行补充资本" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">5000亿元支持银行补充资本</span></p>
+                            <p><i class="fas fa-check text-red-500 mr-2"></i>地方政府专项债券<span class="data-citation" data-content="拟安排地方政府专项债券4.4万亿元、比上年增加5000亿元" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">4.4万亿元</span></p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-red-100 dark:bg-red-900 rounded-full p-3 mr-4">
+                                <i class="fas fa-money-bill-wave text-red-500 dark:text-red-300 text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">适度宽松的货币政策</h3>
+                        </div>
+                        <div class="space-y-3 text-gray-600 dark:text-gray-400">
+                            <p><i class="fas fa-check text-red-500 mr-2"></i><span class="data-citation" data-content="发挥好货币政策工具的总量和结构双重功能，适时降准降息，保持流动性充裕，使社会融资规模、货币供应量增长同经济增长、价格总水平预期目标相匹配" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">适时降准降息，保持流动性充裕</span></p>
+                            <p><i class="fas fa-check text-red-500 mr-2"></i><span class="data-citation" data-content="优化和创新结构性货币政策工具" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">优化和创新结构性货币政策工具</span></p>
+                            <p><i class="fas fa-check text-red-500 mr-2"></i><span class="data-citation" data-content="更大力度促进楼市股市健康发展" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">更大力度促进楼市股市健康发展</span></p>
+                            <p><i class="fas fa-check text-red-500 mr-2"></i><span class="data-citation" data-content="加大对科技创新、绿色发展、提振消费以及民营、小微企业等的支持" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">加大对科技创新、绿色发展等的支持</span></p>
+                            <p><i class="fas fa-check text-red-500 mr-2"></i><span class="data-citation" data-content="推动社会综合融资成本下降，提升金融服务可获得性和便利度" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">推动社会综合融资成本下降</span></p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-red-100 dark:bg-red-900 rounded-full p-3 mr-4">
+                                <i class="fas fa-users text-red-500 dark:text-red-300 text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">民生导向政策</h3>
+                        </div>
+                        <div class="space-y-3 text-gray-600 dark:text-gray-400">
+                            <p><i class="fas fa-check text-red-500 mr-2"></i><span class="data-citation" data-content="强化宏观政策民生导向。坑持以人民为中心，经济政策的着力点更多转向惠民生、促消费" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">经济政策的着力点更多转向惠民生、促消费</span></p>
+                            <p><i class="fas fa-check text-red-500 mr-2"></i><span class="data-citation" data-content="以消费提振畅通经济循环" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">以消费提振畅通经济循环</span></p>
+                            <p><i class="fas fa-check text-red-500 mr-2"></i><span class="data-citation" data-content="以消费升级引领产业升级" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">以消费升级引领产业升级</span></p>
+                            <p><i class="fas fa-check text-red-500 mr-2"></i>推动更多资金资源"投资于人"</p>
+                            <p><i class="fas fa-check text-red-500 mr-2"></i><span class="data-citation" data-content="支持扩大就业、促进居民增收减负、加强消费激励" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">支持扩大就业、促进居民增收减负</span></p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-red-100 dark:bg-red-900 rounded-full p-3 mr-4">
+                                <i class="fas fa-cogs text-red-500 dark:text-red-300 text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">政策协同</h3>
+                        </div>
+                        <div class="space-y-3 text-gray-600 dark:text-gray-400">
+                            <p><i class="fas fa-check text-red-500 mr-2"></i><span class="data-citation" data-content="加强财政、货币、就业、产业、区域、贸易、环保、监管等政策协同以及与改革开放举措的协调配合，增强政策合力" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">加强财政、货币等政策协同配合</span></p>
+                            <p><i class="fas fa-check text-red-500 mr-2"></i><span class="data-citation" data-content="健全和用好宏观政策取向一致性评估工作机制，把经济政策和非经济性政策统一纳入一致性评估" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">健全政策取向一致性评估机制</span></p>
+                            <p><i class="fas fa-check text-red-500 mr-2"></i><span class="data-citation" data-content="统筹政策制定和执行全过程，提升政策目标、工具、时机、力度、节奏的匹配度" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">提升政策匹配度和实施效果</span></p>
+                            <p><i class="fas fa-check text-red-500 mr-2"></i><span class="data-citation" data-content="加强上下联动、横向协作，促进政策从\"最初一公里\"到\"最后一公里\"衔接畅通" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">加强上下联动、横向协作</span></p>
+                            <p><i class="fas fa-check text-red-500 mr-2"></i><span class="data-citation" data-content="注重倾听市场声音，协同推进政策实施和预期引导，塑造积极的社会预期" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">注重倾听市场声音，引导积极预期</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">重点任务实施要求</h3>
+                    <div class="space-y-4 text-gray-600 dark:text-gray-400">
+                        <p><i class="fas fa-arrow-right text-blue-500 mr-2"></i><span class="data-citation" data-content="完成好今年目标任务，必须深入贯彻习近平经济思想，紧抓高质量发展这个首要任务" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">深入贯彻习近平经济思想，紧抓高质量发展这个首要任务</span></p>
+                        <p><i class="fas fa-arrow-right text-blue-500 mr-2"></i><span class="data-citation" data-content="坚持以质取胜和发挥规模效应相统一，实现质的有效提升和量的合理增长" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">坚持以质取胜和发挥规模效应相统一，实现质的有效提升和量的合理增长</span></p>
+                        <p><i class="fas fa-arrow-right text-blue-500 mr-2"></i><span class="data-citation" data-content="坚定实施扩大内需战略，做大做强国内大循环" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">坚定实施扩大内需战略，做大做强国内大循环</span></p>
+                        <p><i class="fas fa-arrow-right text-blue-500 mr-2"></i><span class="data-citation" data-content="在扩大开放中拓展国际合作空间，实现国内国际双循环在更高水平上相互促进、良性互动" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">在扩大开放中拓展国际合作空间，实现双循环良性互动</span></p>
+                        <p><i class="fas fa-arrow-right text-blue-500 mr-2"></i><span class="data-citation" data-content="持续深化供给侧结构性改革，着力破解消费供给的结构性矛盾，更加注重以高质量供给引领需求、创造需求" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">持续深化供给侧结构性改革，着力破解消费供给的结构性矛盾</span></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 政策解读部分 -->
+            <section id="analysis" class="animate-fade-in">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">政策解读与分析</h2>
+                <div class="space-y-6">
+                    <!-- 2024年回顾分析 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">2024年成就与挑战</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="text-lg font-semibold text-red-600 dark:text-red-400 mb-3">主要成就</h4>
+                                <div class="space-y-3 text-gray-600 dark:text-gray-400">
+                                    <p><i class="fas fa-check-circle text-amber-600 mr-2"></i>GDP达到<span class="data-citation" data-content="过去一年，面对苃危牌多、风浪高的国内外形势，在以习近平同志为核心的党中央坚强领导下，国民经济总量达到134.9万亿元，增长5%" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">134.9万亿元、增长5%</span></p>
+                                    <p><i class="fas fa-check-circle text-amber-600 mr-2"></i>城镇新增就业<span class="data-citation" data-content="就业、物价总体平稳，城镇新增就业1256万人、城镇调查失业率平均为5.1%" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">1256万人</span></p>
+                                    <p><i class="fas fa-check-circle text-amber-600 mr-2"></i>居民人均可支配收入实际增长<span class="data-citation" data-content="居民人均可支配收入实际增长5.1%" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">5.1%</span></p>
+                                    <p><i class="fas fa-check-circle text-amber-600 mr-2"></i>粮食产量<span class="data-citation" data-content="粮食产量首次跃上1.4万亿斤新台阶、亩产提升10.1斤" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">首次跃上1.4万亿斤新台阶</span></p>
+                                    <p><i class="fas fa-check-circle text-amber-600 mr-2"></i>高技术制造业增加值增长<span class="data-citation" data-content="高技术制造业、装备制造业增加值分别增长8.9%、7.7%" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">8.9%</span></p>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-red-600 dark:text-red-400 mb-3">主要挑战</h4>
+                                <div class="space-y-3 text-gray-600 dark:text-gray-400">
+                                    <p><i class="fas fa-exclamation-circle text-red-500 mr-2"></i><span class="data-citation" data-content="从国际看，世界百年变局加速演进，外部环境更趋复杂严峻，可能对我国贸易、科技等领域造成更大冲击" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">外部环境更趋复杂严峻</span></p>
+                                    <p><i class="fas fa-exclamation-circle text-red-500 mr-2"></i><span class="data-citation" data-content="从国内看，经济回升向好基础还不稳固，有效需求不足，特别是消费不振" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">经济回升向好基础还不稳固</span></p>
+                                    <p><i class="fas fa-exclamation-circle text-red-500 mr-2"></i><span class="data-citation" data-content="有效需求不足，特别是消费不振" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">有效需求不足，特别是消费不振</span></p>
+                                    <p><i class="fas fa-exclamation-circle text-red-500 mr-2"></i><span class="data-citation" data-content="部分企业生产经营困难，账款拖欠问题仍较突出" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">部分企业生产经营困难</span></p>
+                                    <p><i class="fas fa-exclamation-circle text-red-500 mr-2"></i><span class="data-citation" data-content="一些地方基层财政困难" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm">一些地方基层财政困难</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2025年政策取向分析 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">2025年政策取向解读</h3>
+                        <div class="space-y-6">
+                            <div class="bg-rose-50 dark:bg-rose-900/30 rounded-lg p-4">
+                                <h4 class="text-lg font-semibold text-rose-600 dark:text-rose-400 mb-3">财政政策更加积极</h4>
+                                <p class="text-gray-600 dark:text-gray-400 mb-2">今年赤字率拟按4%左右安排、比上年提高1个百分点，赤字规模5.66万亿元、比上年增加1.6万亿元，财政支出强度明显加大。</p>
+                                <p class="text-gray-600 dark:text-gray-400 mb-2">拟发行超长期特别国债1.3万亿元、比上年增加3000亿元，其中3000亿元用于支持消费品以旧换新。</p>
+                                <p class="text-gray-600 dark:text-gray-400 mb-2">拟发行特别国债5000亿元，支持国有大型商业银行补充资本，增强金融支持实体经济能力。</p>
+                                <p class="text-gray-600 dark:text-gray-400">拟安排地方政府专项债券4.4万亿元、比上年增加5000亿元，重点用于投资建设、土地收储和收购存量商品房、消化地方政府拖欠企业账款等。</p>
+                                <div class="space-y-2 text-gray-600 dark:text-gray-400">
+                                    <p><i class="fas fa-angle-right text-rose-500 mr-2"></i>赤字率提高体现政策发力加大</p>
+                                    <p><i class="fas fa-angle-right text-rose-500 mr-2"></i>特别国债规模扩大支持经济恢复</p>
+                                    <p><i class="fas fa-angle-right text-rose-500 mr-2"></i>专项债券重点支持重大项目建设</p>
+                                </div>
+                            </div>
+
+                            <div class="bg-orange-50 dark:bg-orange-900/30 rounded-lg p-4">
+                                <h4 class="text-lg font-semibold text-orange-600 dark:text-orange-400 mb-3">货币政策适度宽松</h4>
+                                <p class="text-gray-600 dark:text-gray-400 mb-2">政府工作报告明确提出实施“适度宽松的货币政策”，将适时降准降息，保持流动性充裕，使社会融资规模、货币供应量增长同经济增长、价格总水平预期目标相匹配。</p>
+                                <p class="text-gray-600 dark:text-gray-400 mb-2">优化和创新结构性货币政策工具，更大力度促进楼市股市健康发展，加大对科技创新、绿色发展、提振消费以及民营、小微企业等的支持。</p>
+                                <p class="text-gray-600 dark:text-gray-400">专家认为，今年降准降息操作节奏可能前置，符合政府工作报告要求的“出台实施政策要能早则早、宁早勿晚”，预计全年货币政策将继续发挥总量和结构双重功能。</p>
+                                <div class="space-y-2 text-gray-600 dark:text-gray-400">
+                                    <p><i class="fas fa-angle-right text-orange-500 mr-2"></i>降准降息释放流动性支持实体经济</p>
+                                    <p><i class="fas fa-angle-right text-orange-500 mr-2"></i>创新金融工具支持重点领域发展</p>
+                                    <p><i class="fas fa-angle-right text-orange-500 mr-2"></i>加强金融市场稳定维护</p>
+                                </div>
+                            </div>
+
+                            <div class="bg-red-50 dark:bg-red-900/30 rounded-lg p-4">
+                                <h4 class="text-lg font-semibold text-red-600 dark:text-red-400 mb-3">产业政策与协同创新</h4>
+                                <p class="text-gray-600 dark:text-gray-400 mb-2">因地制宜发展新质生产力，加快建设现代化产业体系，培育壮大新兴产业、未来产业，推动传统产业改造提升。</p>
+                                <p class="text-gray-600 dark:text-gray-400 mb-2">深入推进战略性新兴产业融合集群发展。开展新技术新产品新场景大规模应用示范行动，推动商业航天、低空经济、深海科技等新兴产业安全健康发展。</p>
+                                <p class="text-gray-600 dark:text-gray-400 mb-2">建立未来产业投入增长机制，培育生物制造、量子科技、具身智能、6G等未来产业。“具身智能”首次被写入政府工作报告，显示对人工智能领域最新发展的高度重视。</p>
+                                <div class="space-y-2 text-gray-600 dark:text-gray-400">
+                                    <p><i class="fas fa-angle-right text-red-500 mr-2"></i>多项政策工具协同发力</p>
+                                    <p><i class="fas fa-angle-right text-red-500 mr-2"></i>加强政策一致性评估</p>
+                                    <p><i class="fas fa-angle-right text-red-500 mr-2"></i>注重政策实施效果</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 政策影响评估 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">政策影响评估</h3>
+                        <div class="space-y-4 text-gray-600 dark:text-gray-400 mb-6">
+                            <p class="flex items-start">
+                                <i class="fas fa-chart-line text-rose-500 mt-1 mr-3"></i>
+                                <span>经济增长：政策组合将有力支撑<span class="data-citation" data-content="2025年经济增长目标为5%左右，数据来源于政府工作报告" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm"><b>5%左右的增长目标</b></span>，促进经济持续恢复和高质量发展</span>
+                            </p>
+                            <p class="flex items-start">
+                                <i class="fas fa-users text-amber-600 mt-1 mr-3"></i>
+                                <span>就业民生：就业优先政策和民生保障措施将助力实现<span class="data-citation" data-content="城镇调查失业率5.5%左右，城镇新增就业1200万人以上，数据来源于政府工作报告" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm"><b>城镇调查失业率5.5%左右，城镇新增就业1200万人以上</b></span>的就业目标</span>
+                            </p>
+                            <p class="flex items-start">
+                                <i class="fas fa-industry text-orange-500 mt-1 mr-3"></i>
+                                <span>产业升级：创新驱动和结构调整政策将加快<span class="data-citation" data-content="政府工作报告强调因地制宜发展新质生产力，加快建设现代化产业体系" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm"><b>新质生产力发展</b></span>，推动产业转型升级</span>
+                            </p>
+                            <p class="flex items-start">
+                                <i class="fas fa-globe-asia text-red-500 mt-1 mr-3"></i>
+                                <span>对外开放：<span class="data-citation" data-content="政府工作报告强调了全面实施跨境服务贸易负面清单，开展增值电信、生物技术、独资医院开放试点等多项对外开放举措" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm"><b>扩大开放政策</b></span>将深化国际合作，提升对外开放水平</span>
+                            </p>
+                        </div>
+                        
+                        <!-- 数据可视化图表 -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
+                                <div class="p-4 border-b border-gray-100 dark:border-gray-700">
+                                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white">GDP增长预测 (<span class="data-citation" data-content="政府工作报告提出了GDP增长5%左右的目标" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm"><b>2025</b></span>-2027)</h4>
+                                </div>
+                                <div class="p-4">
+                                    <canvas id="gdpChart" class="w-full" height="250"></canvas>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
+                                <div class="p-4 border-b border-gray-100 dark:border-gray-700">
+                                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white">财政政策对比 (2024-<span class="data-citation" data-content="政府工作报告中提及了实施财政货币政策，扩大支出规模，加强重点领域财力保障等措施" data-link="https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm"><b>2025</b></span>)</h4>
+                                </div>
+                                <div class="p-4">
+                                    <canvas id="fiscalChart" class="w-full" height="250"></canvas>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
+                                <div class="p-4 border-b border-gray-100 dark:border-gray-700">
+                                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white">主要经济指标</h4>
+                                </div>
+                                <div class="p-4">
+                                    <canvas id="indicatorsChart" class="w-full" height="250"></canvas>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
+                                <div class="p-4 border-b border-gray-100 dark:border-gray-700">
+                                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white">政策投入分布</h4>
+                                </div>
+                                <div class="p-4">
+                                    <canvas id="policyChart" class="w-full" height="250"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 行业影响部分 -->
+            <section id="impact" class="animate-fade-in">
+                <div class="flex items-center mb-8">
+                    <div class="relative">
+                        <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">行业影响分析</h2>
+                        <div class="absolute bottom-0 left-0 w-1/2 h-1 bg-yellow-500 rounded-full"></div>
+                    </div>
+                    <div class="ml-auto text-yellow-500 dark:text-yellow-400">
+                        <i class="fas fa-chart-column text-2xl"></i>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- 科技创新产业 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-100 dark:border-gray-700 transform transition-all duration-300 card-hover animate-scale-up">
+                        <div class="flex items-center mb-5">
+                            <div class="bg-gradient-to-br from-blue-400 to-blue-600 dark:from-blue-500 dark:to-blue-700 rounded-lg p-3 mr-4 shadow-md text-white">
+                                <i class="fas fa-microchip text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">科技创新产业</h3>
+                        </div>
+                        <div class="space-y-3 text-gray-600 dark:text-gray-400">
+                            <p class="flex items-start hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                <span class="flex-shrink-0 w-5 h-5 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center mr-2">
+                                    <i class="fas fa-plus text-blue-600 dark:text-blue-400 text-xs"></i>
+                                </span>
+                                加大对科技创新的金融支持
+                            </p>
+                            <p class="flex items-start hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                <span class="flex-shrink-0 w-5 h-5 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center mr-2">
+                                    <i class="fas fa-plus text-blue-600 dark:text-blue-400 text-xs"></i>
+                                </span>
+                                推进科技强国建设
+                            </p>
+                            <p class="flex items-start hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                <span class="flex-shrink-0 w-5 h-5 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center mr-2">
+                                    <i class="fas fa-plus text-blue-600 dark:text-blue-400 text-xs"></i>
+                                </span>
+                                实施国家科技重大专项
+                            </p>
+                            <p class="flex items-start hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                <span class="flex-shrink-0 w-5 h-5 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center mr-2">
+                                    <i class="fas fa-plus text-blue-600 dark:text-blue-400 text-xs"></i>
+                                </span>
+                                加强拔尖创新人才培养
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- 制造业 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-green-100 dark:bg-green-900 rounded-full p-3 mr-4">
+                                <i class="fas fa-industry text-green-500 dark:text-green-300 text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">制造业</h3>
+                        </div>
+                        <div class="space-y-3 text-gray-600 dark:text-gray-400">
+                            <p><i class="fas fa-plus text-green-500 mr-2"></i>推进制造业技术改造升级</p>
+                            <p><i class="fas fa-plus text-green-500 mr-2"></i>培育国家级先进制造业集群</p>
+                            <p><i class="fas fa-plus text-green-500 mr-2"></i>支持装备制造业发展</p>
+                            <p><i class="fas fa-plus text-green-500 mr-2"></i>加快新型工业化进程</p>
+                        </div>
+                    </div>
+
+                    <!-- 新能源产业 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-yellow-100 dark:bg-yellow-900 rounded-full p-3 mr-4">
+                                <i class="fas fa-solar-panel text-yellow-500 dark:text-yellow-300 text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">新能源产业</h3>
+                        </div>
+                        <div class="space-y-3 text-gray-600 dark:text-gray-400">
+                            <p><i class="fas fa-plus text-green-500 mr-2"></i>推动重点行业节能降碳改造</p>
+                            <p><i class="fas fa-plus text-green-500 mr-2"></i>推进新能源开发利用</p>
+                            <p><i class="fas fa-plus text-green-500 mr-2"></i>发展新型储能产业</p>
+                            <p><i class="fas fa-plus text-green-500 mr-2"></i>扩大清洁能源使用比例</p>
+                        </div>
+                    </div>
+
+                    <!-- 数字经济 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-purple-100 dark:bg-purple-900 rounded-full p-3 mr-4">
+                                <i class="fas fa-laptop-code text-purple-500 dark:text-purple-300 text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">数字经济</h3>
+                        </div>
+                        <div class="space-y-3 text-gray-600 dark:text-gray-400">
+                            <p><i class="fas fa-plus text-green-500 mr-2"></i>加快数字中国建设</p>
+                            <p><i class="fas fa-plus text-green-500 mr-2"></i>发展数字经济核心产业</p>
+                            <p><i class="fas fa-plus text-green-500 mr-2"></i>推进产业数字化转型</p>
+                            <p><i class="fas fa-plus text-green-500 mr-2"></i>提升数字化服务水平</p>
+                        </div>
+                    </div>
+
+                    <!-- 农业产业 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-emerald-100 dark:bg-emerald-900 rounded-full p-3 mr-4">
+                                <i class="fas fa-tractor text-emerald-500 dark:text-emerald-300 text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">农业产业</h3>
+                        </div>
+                        <div class="space-y-3 text-gray-600 dark:text-gray-400">
+                            <p><i class="fas fa-plus text-green-500 mr-2"></i>夯实农业基础</p>
+                            <p><i class="fas fa-plus text-green-500 mr-2"></i>提高防灾减灾能力</p>
+                            <p><i class="fas fa-plus text-green-500 mr-2"></i>推进乡村全面振兴</p>
+                            <p><i class="fas fa-plus text-green-500 mr-2"></i>提升综合生产能力</p>
+                        </div>
+                    </div>
+
+                    <!-- 服务业 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-red-100 dark:bg-red-900 rounded-full p-3 mr-4">
+                                <i class="fas fa-concierge-bell text-red-500 dark:text-red-300 text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">服务业</h3>
+                        </div>
+                        <div class="space-y-3 text-gray-600 dark:text-gray-400">
+                            <p><i class="fas fa-plus text-green-500 mr-2"></i>促进消费升级</p>
+                            <p><i class="fas fa-plus text-green-500 mr-2"></i>发展现代服务业</p>
+                            <p><i class="fas fa-plus text-green-500 mr-2"></i>提升服务质量</p>
+                            <p><i class="fas fa-plus text-green-500 mr-2"></i>扩大服务业开放</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">行业发展趋势分析</h3>
+                    <div class="space-y-4 text-gray-600 dark:text-gray-400">
+                        <div class="flex items-start">
+                            <i class="fas fa-arrow-trend-up text-blue-500 mt-1 mr-3"></i>
+                            <div>
+                                <h4 class="font-semibold mb-2">产业结构优化升级</h4>
+                                <p>政策支持将加快传统产业转型升级，促进新兴产业发展，推动产业结构向高质量方向优化</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-arrows-split-up-and-left text-green-500 mt-1 mr-3"></i>
+                            <div>
+                                <h4 class="font-semibold mb-2">产业链供应链韧性增强</h4>
+                                <p>通过科技创新和数字化转型，提升产业链供应链的现代化水平和抗风险能力</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-arrows-to-circle text-purple-500 mt-1 mr-3"></i>
+                            <div>
+                                <h4 class="font-semibold mb-2">产业融合发展加速</h4>
+                                <p>数字技术与实体经济深度融合，推动产业链、创新链、供应链、价值链、人才链深度融合</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 未来展望部分 -->
+            <section id="outlook" class="animate-fade-in">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">未来展望</h2>
+                <div class="space-y-6">
+                    <!-- 发展机遇与挑战 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">发展机遇与挑战</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="text-lg font-semibold text-rose-600 dark:text-rose-400 mb-3">发展机遇</h4>
+                                <div class="space-y-3 text-gray-600 dark:text-gray-400">
+                                    <p><i class="fas fa-check text-amber-600 mr-2"></i>具有显著的制度优势</p>
+                                    <p><i class="fas fa-check text-amber-600 mr-2"></i>拥有超大规模市场</p>
+                                    <p><i class="fas fa-check text-amber-600 mr-2"></i>完备的产业体系</p>
+                                    <p><i class="fas fa-check text-amber-600 mr-2"></i>丰富的人力人才资源</p>
+                                    <p><i class="fas fa-check text-amber-600 mr-2"></i>有效的治理机制</p>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-red-600 dark:text-red-400 mb-3">发展挑战</h4>
+                                <div class="space-y-3 text-gray-600 dark:text-gray-400">
+                                    <p><i class="fas fa-exclamation text-red-500 mr-2"></i>外部环境更趋复杂严峻</p>
+                                    <p><i class="fas fa-exclamation text-red-500 mr-2"></i>经济恢复基础需巩固</p>
+                                    <p><i class="fas fa-exclamation text-red-500 mr-2"></i>结构性矛盾仍然存在</p>
+                                    <p><i class="fas fa-exclamation text-red-500 mr-2"></i>创新能力有待提升</p>
+                                    <p><i class="fas fa-exclamation text-red-500 mr-2"></i>发展不平衡问题突出</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 重点发展方向 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">重点发展方向</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div class="bg-rose-50 dark:bg-rose-900/30 rounded-lg p-4">
+                                <h4 class="text-lg font-semibold text-rose-600 dark:text-rose-400 mb-3">科技创新</h4>
+                                <div class="space-y-2 text-gray-600 dark:text-gray-400">
+                                    <p><i class="fas fa-arrow-right text-rose-500 mr-2"></i>加强关键核心技术攻关</p>
+                                    <p><i class="fas fa-arrow-right text-rose-500 mr-2"></i>提升自主创新能力</p>
+                                    <p><i class="fas fa-arrow-right text-rose-500 mr-2"></i>推动产业链升级</p>
+                                </div>
+                            </div>
+
+                            <div class="bg-orange-50 dark:bg-orange-900/30 rounded-lg p-4">
+                                <h4 class="text-lg font-semibold text-orange-600 dark:text-orange-400 mb-3">绿色发展</h4>
+                                <div class="space-y-2 text-gray-600 dark:text-gray-400">
+                                    <p><i class="fas fa-arrow-right text-orange-500 mr-2"></i>推进碳达峰碳中和</p>
+                                    <p><i class="fas fa-arrow-right text-orange-500 mr-2"></i>发展清洁能源</p>
+                                    <p><i class="fas fa-arrow-right text-orange-500 mr-2"></i>促进循环经济</p>
+                                </div>
+                            </div>
+
+                            <div class="bg-red-50 dark:bg-red-900/30 rounded-lg p-4">
+                                <h4 class="text-lg font-semibold text-red-600 dark:text-red-400 mb-3">数字化转型</h4>
+                                <div class="space-y-2 text-gray-600 dark:text-gray-400">
+                                    <p><i class="fas fa-arrow-right text-red-500 mr-2"></i>建设数字中国</p>
+                                    <p><i class="fas fa-arrow-right text-red-500 mr-2"></i>发展数字经济</p>
+                                    <p><i class="fas fa-arrow-right text-red-500 mr-2"></i>推进智慧城市建设</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 长期发展趋势 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">长期发展趋势</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 w-12 h-12 bg-rose-100 dark:bg-rose-900 rounded-full flex items-center justify-center mr-4">
+                                    <i class="fas fa-chart-line text-rose-500 text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">经济长期向好</h4>
+                                    <p class="text-gray-600 dark:text-gray-400">经济长期向好的基本趋势没有改变，高质量发展将持续推进</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-full flex items-center justify-center mr-4">
+                                    <i class="fas fa-sync text-orange-500 text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">动能转换加快</h4>
+                                    <p class="text-gray-600 dark:text-gray-400">新旧动能转换加快，新质生产力发展将成为经济增长的主要驱动力</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 w-12 h-12 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center mr-4">
+                                    <i class="fas fa-globe-asia text-red-500 text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">开放合作深化</h4>
+                                    <p class="text-gray-600 dark:text-gray-400">对外开放水平不断提升，国际合作领域不断拓展，双循环新发展格局加快形成</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 政策建议 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">政策建议</h3>
+                        <div class="space-y-4 text-gray-600 dark:text-gray-400">
+                            <div class="flex items-start">
+                                <i class="fas fa-lightbulb text-yellow-500 mt-1 mr-3"></i>
+                                <div>
+                                    <h4 class="font-semibold mb-2">加强政策协同</h4>
+                                    <p>进一步加强财政、货币、产业等政策的协调配合，形成政策合力</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-bullseye text-red-500 mt-1 mr-3"></i>
+                                <div>
+                                    <h4 class="font-semibold mb-2">精准施策</h4>
+                                    <p>针对不同领域、不同行业的特点和需求，实施更有针对性的政策措施</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-balance-scale text-indigo-500 mt-1 mr-3"></i>
+                                <div>
+                                    <h4 class="font-semibold mb-2">统筹兼顾</h4>
+                                    <p>统筹好发展和安全、改革和稳定、供给和需求、当前和长远的关系</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- 作者信息与页脚 -->
+        <footer class="mt-24 pt-10 pb-16 border-t border-gray-200 dark:border-gray-700">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="md:flex md:items-center md:justify-between">
+                    <div class="flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-8">
+                        <div class="flex items-center">
+                            <div class="bg-blue-100 dark:bg-blue-900 rounded-full p-2 mr-3">
+                                <i class="fas fa-user text-blue-600 dark:text-blue-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">作者信息</h3>
+                                <p class="text-gray-600 dark:text-gray-400">yikegunshi</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="bg-purple-100 dark:bg-purple-900 rounded-full p-2 mr-3">
+                                <i class="fas fa-calendar text-purple-600 dark:text-purple-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">发布时间</h3>
+                                <p class="text-gray-600 dark:text-gray-400">2025年 3月</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-8 md:mt-0">
+                        <button id="backToTop" class="inline-flex items-center px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors">
+                            <i class="fas fa-arrow-up mr-2"></i>
+                            返回顶部
+                        </button>
+                    </div>
+                </div>
+                <div class="mt-10 border-t border-gray-200 dark:border-gray-800 pt-8 flex flex-col md:flex-row md:items-center md:justify-between">
+                    <p class="text-gray-600 dark:text-gray-400 text-center md:text-left">© 2025 政府工作报告经济政策分析 | 所有权利已保留</p>
+                    <div class="flex justify-center mt-4 md:mt-0 space-x-6">
+                        <a href="#" class="text-gray-500 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400 transition-colors">
+                            <i class="fab fa-weixin text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-500 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400 transition-colors">
+                            <i class="fab fa-weibo text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-500 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400 transition-colors">
+                            <i class="fas fa-envelope text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // 页面加载完成后移除加载动画
+        window.addEventListener('load', () => {
+            const loading = document.getElementById('loading');
+            setTimeout(() => {
+                loading.style.opacity = '0';
+                setTimeout(() => {
+                    loading.style.display = 'none';
+                }, 500);
+            }, 500);
+        });
+        
+        // 深色模式切换
+        const themeToggle = document.getElementById('themeToggle');
+        const mobileThemeToggle = document.getElementById('mobileThemeToggle');
+        const html = document.documentElement;
+        
+        // 检测用户选择的主题模式
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+        }
+        
+        // 主题切换函数
+        const toggleTheme = () => {
+            html.classList.toggle('dark');
+            localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+        };
+        
+        themeToggle.addEventListener('click', toggleTheme);
+        
+        // 移动端主题切换
+        if (mobileThemeToggle) {
+            mobileThemeToggle.addEventListener('click', toggleTheme);
+        }
+        
+        // 移动菜单切换
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        if (mobileMenuButton && mobileMenu) {
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // 点击移动菜单项后关闭菜单
+            document.querySelectorAll('#mobileMenu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+        }
+        
+        // 添加滚动动画
+        const animateOnScroll = () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-fade-in');
+                        // 一旦动画已应用，停止观察该元素
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            document.querySelectorAll('.animate-fade-in').forEach(el => {
+                observer.observe(el);
+            });
+            
+            return observer;
+        };
+        
+        const scrollObserver = animateOnScroll();
+        
+        // 返回顶部按钮
+        const backToTopButton = document.getElementById('backToTop');
+        
+        if (backToTopButton) {
+            backToTopButton.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            
+            // 显示/隐藏返回顶部按钮
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopButton.classList.add('opacity-100');
+                    backToTopButton.classList.remove('opacity-0');
+                } else {
+                    backToTopButton.classList.add('opacity-0');
+                    backToTopButton.classList.remove('opacity-100');
+                }
+            });
+        }
+        
+        // 添加导航栏滚动效果
+        const navbar = document.querySelector('nav');
+        let lastScrollY = window.scrollY;
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                navbar.classList.add('shadow-md');
+                // 向下滚动时隐藏导航栏
+                if (window.scrollY > lastScrollY) {
+                    navbar.style.transform = 'translateY(-100%)';
+                } else {
+                    navbar.style.transform = 'translateY(0)';
+                }
+            } else {
+                navbar.classList.remove('shadow-md');
+                navbar.style.transform = 'translateY(0)';
+            }
+            lastScrollY = window.scrollY;
+        });
+        
+        // 激活当前导航菜单项
+        const activateNavItem = () => {
+            const sections = document.querySelectorAll('section[id]');
+            const navItems = document.querySelectorAll('nav a[href^="#"]');
+            
+            window.addEventListener('scroll', () => {
+                let current = '';
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - 100;
+                    const sectionHeight = section.offsetHeight;
+                    
+                    if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                
+                navItems.forEach(item => {
+                    item.classList.remove('font-bold', 'text-blue-600', 'dark:text-blue-400');
+                    if (item.getAttribute('href') === `#${current}`) {
+                        item.classList.add('font-bold', 'text-blue-600', 'dark:text-blue-400');
+                    }
+                });
+            });
+        };
+        
+        activateNavItem();
+        
+        // 初始化数据可视化图表
+        const initCharts = () => {
+            // 设置图表颜色
+            const isDark = document.documentElement.classList.contains('dark');
+            const colors = {
+                blue: isDark ? 'rgba(59, 130, 246, 0.8)' : 'rgba(37, 99, 235, 0.7)',
+                green: isDark ? 'rgba(16, 185, 129, 0.8)' : 'rgba(5, 150, 105, 0.7)',
+                yellow: isDark ? 'rgba(245, 158, 11, 0.8)' : 'rgba(217, 119, 6, 0.7)',
+                purple: isDark ? 'rgba(139, 92, 246, 0.8)' : 'rgba(124, 58, 237, 0.7)',
+                red: isDark ? 'rgba(239, 68, 68, 0.8)' : 'rgba(220, 38, 38, 0.7)',
+                gridColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+                textColor: isDark ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)'
+            };
+            
+            // 全局图表设置
+            Chart.defaults.color = colors.textColor;
+            Chart.defaults.font.family = '"Noto Sans SC", sans-serif';
+            
+            // GDP增长预测图表
+            const gdpChartCtx = document.getElementById('gdpChart');
+            if (gdpChartCtx) {
+                const gdpChart = new Chart(gdpChartCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['2024', '2025', '2026', '2027'],
+                        datasets: [{
+                            label: 'GDP增速预测',
+                            data: [5.0, 5.2, 5.5, 5.7],
+                            borderColor: colors.blue,
+                            backgroundColor: colors.blue.replace(/[^,]+(?=\))/, '0.1'),
+                            tension: 0.3,
+                            fill: true,
+                            pointBackgroundColor: colors.blue,
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `增长率: ${context.raw}%`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: false,
+                                min: 4,
+                                max: 6,
+                                ticks: {
+                                    callback: function(value) {
+                                        return value + '%';
+                                    }
+                                },
+                                grid: {
+                                    color: colors.gridColor
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    color: colors.gridColor
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // 财政政策对比图表
+            const fiscalChartCtx = document.getElementById('fiscalChart');
+            if (fiscalChartCtx) {
+                const fiscalChart = new Chart(fiscalChartCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['财政赤字率', '特别国债(万亿)', '专项债券(万亿)'],
+                        datasets: [
+                            {
+                                label: '2024年',
+                                data: [3.0, 1.0, 3.9],
+                                backgroundColor: colors.yellow,
+                                borderRadius: 4
+                            },
+                            {
+                                label: '2025年',
+                                data: [4.0, 1.3, 4.4],
+                                backgroundColor: colors.blue,
+                                borderRadius: 4
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const label = context.dataset.label || '';
+                                        const value = context.raw;
+                                        return `${label}: ${context.dataIndex === 0 ? value + '%' : value + '万亿元'}`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    color: colors.gridColor
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    display: false
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // 主要经济指标图表
+            const indicatorsChartCtx = document.getElementById('indicatorsChart');
+            if (indicatorsChartCtx) {
+                const indicatorsChart = new Chart(indicatorsChartCtx, {
+                    type: 'radar',
+                    data: {
+                        labels: ['GDP增速', 'CPI涨幅', '城镇就业', '对外贸易', '民生改善', '创新发展'],
+                        datasets: [{
+                            label: '2025年目标',
+                            data: [5.0, 2.0, 4.5, 3.8, 4.8, 5.2],
+                            fill: true,
+                            backgroundColor: colors.purple.replace(/[^,]+(?=\))/, '0.2'),
+                            borderColor: colors.purple,
+                            pointBackgroundColor: colors.purple,
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: colors.purple
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                grid: {
+                                    color: colors.gridColor
+                                },
+                                ticks: {
+                                    display: false,
+                                    maxTicksLimit: 5
+                                },
+                                angleLines: {
+                                    color: colors.gridColor
+                                },
+                                suggestedMin: 0,
+                                suggestedMax: 6
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // 政策投入分布图表
+            const policyChartCtx = document.getElementById('policyChart');
+            if (policyChartCtx) {
+                const policyChart = new Chart(policyChartCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['基础设施投资', '科技创新支持', '民生工程', '产业转型升级', '其他'],
+                        datasets: [{
+                            data: [35, 25, 20, 15, 5],
+                            backgroundColor: [
+                                colors.blue,
+                                colors.green,
+                                colors.yellow,
+                                colors.purple,
+                                colors.red
+                            ],
+                            borderWidth: 0,
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    boxWidth: 12,
+                                    padding: 15
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const label = context.label || '';
+                                        const value = context.raw;
+                                        return `${label}: ${value}%`;
+                                    }
+                                }
+                            }
+                        },
+                        cutout: '60%'
+                    }
+                });
+            }
+            
+            // 主题变化时更新图表颜色
+            themeToggle.addEventListener('click', () => {
+                // 延迟一下等主题切换完成
+                setTimeout(() => {
+                    destroyCharts();
+                    initCharts();
+                }, 100);
+            });
+            
+            if (mobileThemeToggle) {
+                mobileThemeToggle.addEventListener('click', () => {
+                    setTimeout(() => {
+                        destroyCharts();
+                        initCharts();
+                    }, 100);
+                });
+            }
+        };
+        
+        // 销毁图表以重新绘制
+        const destroyCharts = () => {
+            const charts = ['gdpChart', 'fiscalChart', 'indicatorsChart', 'policyChart'];
+            charts.forEach(id => {
+                const chartInstance = Chart.getChart(id);
+                if (chartInstance) {
+                    chartInstance.destroy();
+                }
+            });
+        };
+        
+        // 页面加载完成后初始化图表
+        window.addEventListener('load', initCharts);
+        
+        // 数据引用功能
+        const citationPopup = document.getElementById('citationPopup');
+        const citationBody = document.getElementById('citationBody');
+        const sourceLink = document.getElementById('sourceLink');
+        const closePopup = document.getElementById('closePopup');
+        const closeCitationBtn = document.getElementById('closeCitationBtn');
+        
+        // 关闭弹窗的事件监听
+        closePopup.addEventListener('click', closeCitationPopup);
+        closeCitationBtn.addEventListener('click', closeCitationPopup);
+        
+        // 点击弹窗外部关闭
+        citationPopup.addEventListener('click', function(e) {
+            if (e.target === citationPopup) {
+                closeCitationPopup();
+            }
+        });
+        
+        // 关闭弹窗函数
+        function closeCitationPopup() {
+            citationPopup.classList.remove('active');
+        }
+        
+        // 打开弹窗函数
+        function openCitationPopup(content, link) {
+            citationBody.innerHTML = content;
+            sourceLink.href = link;
+            citationPopup.classList.add('active');
+        }
+        
+        // 初始化所有数据引用元素的点击事件
+        document.addEventListener('DOMContentLoaded', function() {
+            const citations = document.querySelectorAll('.data-citation');
+            citations.forEach(citation => {
+                citation.addEventListener('click', function() {
+                    const content = this.getAttribute('data-content');
+                    const link = this.getAttribute('data-link');
+                    openCitationPopup(content, link);
+                });
+            });
+            
+            // 初始化搜索功能
+            initSearch();
+            
+            // 初始化额外的数据可视化图表
+            initAdditionalCharts();
+        });
+        
+        // 搜索功能实现
+        function initSearch() {
+            const searchInput = document.getElementById('search-input');
+            const searchFilter = document.getElementById('search-filter');
+            const searchResults = document.getElementById('search-results');
+            const resultsContainer = document.getElementById('results-container');
+            
+            if (!searchInput || !searchResults) return;
+            
+            // 搜索事件处理
+            searchInput.addEventListener('input', debounce(performSearch, 300));
+            if (searchFilter) {
+                searchFilter.addEventListener('change', debounce(performSearch, 300));
+            }
+            
+            // 点击外部关闭搜索结果
+            document.addEventListener('click', function(e) {
+                if (searchResults && !searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+                    searchResults.classList.add('hidden');
+                }
+            });
+            
+            // 执行搜索功能
+            function performSearch() {
+                const query = searchInput.value.trim().toLowerCase();
+                const filter = searchFilter ? searchFilter.value : 'all';
+                
+                if (query.length < 2) {
+                    searchResults.classList.add('hidden');
+                    return;
+                }
+                
+                // 收集搜索内容
+                let searchItems = [];
+                
+                // 根据过滤器选择搜索范围
+                if (filter === 'all' || filter === 'citation') {
+                    // 搜索引用内容
+                    document.querySelectorAll('.data-citation').forEach(el => {
+                        const content = el.textContent.trim();
+                        const fullContent = el.getAttribute('data-content');
+                        const type = '引用';
+                        const element = el;
+                        
+                        if ((content.toLowerCase().includes(query) || 
+                            (fullContent && fullContent.toLowerCase().includes(query))) &&
+                            (filter === 'all' || filter === 'citation')) {
+                            searchItems.push({ content, fullContent, type, element });
+                        }
+                    });
+                }
+                
+                // 搜索财政政策内容
+                if (filter === 'all' || filter === 'fiscal') {
+                    document.querySelectorAll('.fiscal-policy-section p, .fiscal-policy-section li, #fiscal-policy p, #fiscal-policy li').forEach(el => {
+                        if (!el.querySelector('.data-citation')) { // 避免重复搜索引用内容
+                            const content = el.textContent.trim();
+                            const type = '财政政策';
+                            const element = el;
+                            
+                            if (content.toLowerCase().includes(query) &&
+                                (filter === 'all' || filter === 'fiscal')) {
+                                searchItems.push({ content, type, element });
+                            }
+                        }
+                    });
+                }
+                
+                // 搜索货币政策内容
+                if (filter === 'all' || filter === 'monetary') {
+                    document.querySelectorAll('.monetary-policy-section p, .monetary-policy-section li, #monetary-policy p, #monetary-policy li').forEach(el => {
+                        if (!el.querySelector('.data-citation')) { // 避免重复搜索引用内容
+                            const content = el.textContent.trim();
+                            const type = '货币政策';
+                            const element = el;
+                            
+                            if (content.toLowerCase().includes(query) &&
+                                (filter === 'all' || filter === 'monetary')) {
+                                searchItems.push({ content, type, element });
+                            }
+                        }
+                    });
+                }
+                
+                // 显示搜索结果
+                if (searchItems.length > 0) {
+                    resultsContainer.innerHTML = '';
+                    
+                    // 最多显示10个结果
+                    searchItems.slice(0, 10).forEach(item => {
+                        const resultItem = document.createElement('div');
+                        resultItem.className = 'p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded cursor-pointer mb-1';
+                        
+                        const contentText = item.content.length > 60 ? 
+                            item.content.substring(0, 60) + '...' : item.content;
+                        
+                        // 高亮搜索关键词
+                        const highlightedContent = contentText.replace(
+                            new RegExp(query, 'gi'),
+                            match => `<span class="bg-yellow-200 dark:bg-yellow-800">${match}</span>`
+                        );
+                        
+                        resultItem.innerHTML = `
+                            <div class="flex items-center justify-between">
+                                <div class="font-medium">${highlightedContent}</div>
+                                <span class="text-xs px-1.5 py-0.5 rounded bg-gray-200 dark:bg-gray-600">${item.type}</span>
+                            </div>
+                        `;
+                        
+                        resultItem.addEventListener('click', () => {
+                            // 滚动到搜索项
+                            item.element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            
+                            // 高亮显示找到的元素
+                            item.element.classList.add('bg-yellow-100', 'dark:bg-yellow-900');
+                            setTimeout(() => {
+                                item.element.classList.remove('bg-yellow-100', 'dark:bg-yellow-900');
+                            }, 2000);
+                            
+                            // 隐藏搜索结果
+                            searchResults.classList.add('hidden');
+                        });
+                        
+                        resultsContainer.appendChild(resultItem);
+                    });
+                    
+                    searchResults.classList.remove('hidden');
+                } else {
+                    resultsContainer.innerHTML = '<div class="p-2">没有找到匹配的结果</div>';
+                    searchResults.classList.remove('hidden');
+                }
+            }
+        }
+        
+        // 初始化额外的数据可视化图表
+        function initAdditionalCharts() {
+            // 创建新的政策影响评估图表
+            const indicatorsChartCtx = document.getElementById('indicatorsChart');
+            if (indicatorsChartCtx) {
+                const indicatorsChart = new Chart(indicatorsChartCtx, {
+                    type: 'radar',
+                    data: {
+                        labels: ['经济增长', '就业稳定', '产业升级', '创新能力', '绿色发展', '民生改善'],
+                        datasets: [{
+                            label: '2024年政策影响',
+                            data: [75, 80, 65, 70, 60, 75],
+                            borderColor: colors.yellow,
+                            backgroundColor: colors.yellow.replace(/[^,]+(?=\))/, '0.2'),
+                            pointBackgroundColor: colors.yellow,
+                            pointRadius: 4
+                        }, {
+                            label: '2025年预期影响',
+                            data: [85, 90, 80, 85, 75, 90],
+                            borderColor: colors.blue,
+                            backgroundColor: colors.blue.replace(/[^,]+(?=\))/, '0.2'),
+                            pointBackgroundColor: colors.blue,
+                            pointRadius: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    stepSize: 20,
+                                    display: false
+                                },
+                                pointLabels: {
+                                    font: {
+                                        size: 12
+                                    }
+                                },
+                                grid: {
+                                    color: colors.gridColor
+                                }
+                            }
+                        },
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `${context.dataset.label}: ${context.raw}分`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // 创建政策投入分布图表
+            const policyChartCtx = document.getElementById('policyChart');
+            if (policyChartCtx) {
+                const policyChart = new Chart(policyChartCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['财政政策', '货币政策', '产业政策', '科技创新', '民生政策', '绿色发展'],
+                        datasets: [{
+                            data: [25, 20, 18, 15, 12, 10],
+                            backgroundColor: [
+                                colors.blue,
+                                colors.green,
+                                colors.yellow,
+                                colors.purple,
+                                colors.red,
+                                colors.teal
+                            ],
+                            borderWidth: 1,
+                            borderColor: isDark ? '#374151' : '#f9fafb'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                                labels: {
+                                    boxWidth: 12,
+                                    padding: 15,
+                                    font: {
+                                        size: 12
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `${context.label}: ${context.raw}%`;
+                                    }
+                                }
+                            }
+                        },
+                        cutout: '60%'
+                    }
+                });
+            }
+        }
+        
+        // 防抖函数
+        function debounce(func, wait) {
+            let timeout;
+            return function() {
+                const context = this;
+                const args = arguments;
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(context, args), wait);
+            };
+        }
+    </script>
+</body>
+</html> 
